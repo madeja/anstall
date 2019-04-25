@@ -1,0 +1,9 @@
+---
+- name: Install packages with chocolatey
+  win_chocolatey:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - googlechrome
+    - git
+    - office365proplus

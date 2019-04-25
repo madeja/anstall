@@ -1,0 +1,22 @@
+---
+- name: Install base packages
+  hosts: b512
+  roles:
+    - base-pkg
+  gather_facts: no
+  tags:
+    - base-pkg
+
+- name: General manipulation with computers
+  hosts: b512
+  roles:
+    - general
+  gather_facts: no
+  tags:
+    - general
+
+- name: Cleanup student account
+  hosts: b512
+  roles:
+    - cleanup
+  gather_facts: no

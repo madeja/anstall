@@ -1,0 +1,125 @@
+---
+
+- name: Create tmp dir
+  win_file:
+    path: C:\tmp
+    state: directory
+  tags:
+    - namakanyden2019
+    - vscode
+    - obs-studio
+
+# --------------------- NAMAKANY DEN 2019 ------------------------------------------ #
+
+- name: Download scratch_microbit_for_windows.zip
+  win_get_url:
+    url: http://example.com/scratch_microbit_for_windows.zip
+    dest: c:\tmp\windows.zip
+  tags:
+    - namakanyden2019
+
+- name: Unzip box to student desktop
+  win_unzip:
+    src: c:\tmp\windows.zip
+    dest: C:\tmp\
+    delete_archive: yes
+  tags:
+    - namakanyden2019
+
+- name: Install scratch_microbit_for_windows.msi
+  win_msi:
+    path: C:\tmp\ScratchLinkSetup.msi
+    wait: yes
+  tags:
+    - namakanyden2019
+
+- name: Remove tmp
+  win_file:
+    path: C:\tmp\ScratchLinkSetup.msi
+    state: absent
+  tags:
+    - namakanyden2019
+
+# --------------------- VISUAL STUDIO ---------------------------------------------- #
+
+- name: Install Visual studio Code 1.24.1
+  win_chocolatey:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - vscode
+  tags:
+    - vscode
+    - DotNetExam
+
+- name: Download Visual studio 2017 eneterprise LICENCE
+  win_get_url:
+    url: http://example.com/licence.txt
+    dest: c:\tmp\licence.txt
+  tags:
+    - vscode
+    - DotNetExam
+
+- name: Create DotNet dir
+  win_file:
+    path: C:\DotNet
+    state: directory
+  tags:
+    - vscode
+    - DotNetExam
+
+# --------------------- .NET EXAM PROJECT DISTRIBUTION ---------------------------- #
+
+- name: Download gamestudio2018-master.zip to C:\DotNet
+  win_get_url:
+    url: http://example.com/gamestudio2018-master.zip
+    dest: c:\DotNet\gamestudio2018-master.zip
+  tags:
+    - DotNetExam
+
+- name: Download gamestudio2018-master.zip to C:\tmp
+  win_get_url:
+    url: http://atlantis.cnl.sk/~matt/tmp/gamestudio2018-master.zip
+    dest: c:\tmp\gamestudio2018-master.zip
+  tags:
+    - DotNetExam
+- name: Unzip project to DotNet dir
+  win_unzip:
+    src: C:\DotNet\skuska_net.zip
+    dest: C:\DotNet\
+  tags:
+    - DotNetExam
+
+- name: Remove VS
+  win_file:
+    path: C:\DotNet
+    state: absent
+  tags:
+    - vscode
+    - DotNetExam
+
+# --------------------- INTELLIJIDEA ---------------------------------------------- #
+
+- name: Install intellijidea-ultimate
+  win_chocolatey:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - intellijidea-ultimate
+
+# --------------------- OBS STUDIO ------------------------------------------------ #
+
+- name: Download obs-studio.zip
+  win_get_url:
+    url: http://exmple.com/obs-studio.zip
+    dest: c:\tmp\obs-studio.zip
+  tags:
+    - obs-studio
+
+- name: Unzip box to student account
+  win_unzip:
+    src: c:\tmp\obs-studio.zip
+    dest: C:\Users\student\AppData\Roaming
+    delete_archive: yes
+  tags:
+    - obs-studio

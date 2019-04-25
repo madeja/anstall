@@ -1,0 +1,35 @@
+---
+
+# --------------------- CLEAN STUDENT ACCOUNT --------------------------------- #
+
+- name: Remove dirs
+  win_file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - C:\Users\student\Documents
+    - C:\Users\student\Downloads
+    - C:\Users\student\Pictures
+    - C:\Users\student\Desktop
+  tags:
+    - cleanup
+
+- name: Create empty dirs
+  win_file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - C:\Users\student\Documents
+    - C:\Users\student\Downloads
+    - C:\Users\student\Pictures
+  tags:
+    - cleanup
+
+# --------------------- DESKTOP --------------------------------- #
+
+- name: Copy Desktop links and files
+  win_copy:
+    src: "files/Desktop"
+    dest: C:\Users\student\
+  tags:
+    - cleanup

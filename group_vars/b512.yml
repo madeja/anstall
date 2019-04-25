@@ -1,0 +1,8 @@
+# administrator
+ansible_user: admin
+ansible_password: mypwd
+# ansible_port: 5985 # http conntection
+ansible_port: 5986 # https connection
+ansible_connection: winrm
+# The following is necessary for Python 2.7.9+ when using default WinRM self-signed certificates:
+ansible_winrm_server_cert_validation: ignore

@@ -1,0 +1,38 @@
+---
+- name: Install base packages
+  hosts: b512
+  roles:
+    - base-pkg
+  gather_facts: no
+  tags:
+    - base-pkg
+
+- name: General manipulation with computers
+  hosts: b512
+  roles:
+    - general
+  gather_facts: no
+  tags:
+    - general
+
+- name: Install full staff for hackaton 2017
+  hosts: b512
+  roles:
+    - hackaton-2017
+  gather_facts: no
+  tags:
+    - hackaton-2017
+
+- name: Install all courses software
+  hosts: b512
+  roles:
+    - courses
+  gather_facts: no
+  tags:
+    - courses
+
+- name: Cleanup student account
+  hosts: b512
+  roles:
+    - cleanup
+  gather_facts: no

@@ -1,0 +1,73 @@
+---
+- name: Install vagrant and virtualbox
+  win_chocolatey:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - vagrant
+    - virtualbox
+
+- name: "Set admin full rights for 'C:\\Users\\student' dir"
+  win_acl:
+    path: C:\Users\student
+    user: admin
+    rights: Read,Write,Modify,FullControl,Delete
+    type: allow
+    state: present
+
+# --------------------- BASE SOLUTION ---------------------------------------------- #
+
+# - name: Add vagrant box dakami/ethdev (for admin user)
+#   win_command: vagrant box add dakami/ethdev
+# 
+# - name: Copy admin's vagrant boxes to student's account
+#   win_shell: Copy-Item C:\Users\admin\.vagrant.d\boxes\ -Destination C:\Users\student\.vagrant.d\ -Recurse -Force
+# 
+# - name: Remove box from admin account
+#   win_file:
+#     path: C:\Users\admin\.vagrant.d\boxes\
+#     state: absent
+
+# --------------------- FASTER SOLUTION ------------------------------------------- #
+
+- name: Create tmp dir
+  win_file:
+    path: C:\tmp
+    state: directory
+
+- name: Download vagrant box (for faster deploy)
+  win_get_url:
+    url: http://example.com/dakami-VAGRANTSLASH-ethdev.zip
+    dest: c:\tmp\dakami-VAGRANTSLASH-ethdev.zip
+
+- name: Unzip box to student account and delete it
+  win_unzip:
+    src: c:\tmp\dakami-VAGRANTSLASH-ethdev.zip
+    dest: C:\Users\student\.vagrant.d\boxes\ 
+    delete_archive: yes
+
+- name: Create senacor-2017 dir
+  win_file:
+    path: C:\Users\student\senacor-2017
+    state: directory
+
+- name: Download archived git repo (for faster deploy)
+  win_get_url:
+    url: http://example.com/SmartContract-WorkshopSetup.zip
+    dest: c:\tmp\SmartContract-WorkshopSetup.zip
+
+- name: Unzip git repo to senacor-2017
+  win_unzip:
+    src: c:\tmp\SmartContract-WorkshopSetup.zip
+    dest: C:\Users\student\senacor-2017\SmartContract-WorkshopSetup
+    delete_archive: yes
+
+- name: Download virtualbox ext
+  win_get_url:
+    url: http://download.virtualbox.org/virtualbox/5.1.26/Oracle_VM_VirtualBox_Extension_Pack-5.1.26-117224.vbox-extpack
+    dest: C:\Users\student\senacor-2017\Oracle_VM_VirtualBox_Extension_Pack-5.1.26-117224.vbox-extpack
+
+- name: Remove tmp dir
+  win_file:
+    path: C:\tmp
+    state: absent

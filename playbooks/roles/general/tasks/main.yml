@@ -1,0 +1,86 @@
+---
+# --------------------- BASE COMPUTER MANIPULATION --------------------------------- #
+
+- name: "Send 'Don't turn off computer' message"
+  win_msg: 
+    msg: "Po skončení nevypínajte počítače prosím!!!"
+    display_seconds: 1800
+    wait: True
+  tags:
+    - msg-dontturnoff
+
+- name: "Shutdown computer"
+  win_command: shutdown -s -f -t 0
+  tags:
+    - shutdown
+
+- name: "Reboot computer"
+  win_command: shutdown -r -f -t 0
+  tags:
+    - reboot
+
+- name: Ping
+  win_ping:
+  tags:
+    - ping
+
+# --------------------- INTERNET BLOCKING ------------------------------------------ #
+
+- name: "Block internet for 'Programovanie' course exam"
+  win_shell: "{{ item }}"
+  with_items:
+    - netsh advfirewall set currentprofile firewallpolicy blockinbound,blockoutbound
+    - netsh advfirewall firewall add rule name="IT4KT" dir=out interface=any action=allow remoteip=147.232.55.84
+    - netsh advfirewall firewall add rule name="BOOTSTRAP" dir=out interface=any action=allow remoteip=209.197.3.15
+    - netsh advfirewall firewall add rule name="GITHUB CSS" dir=out interface=any action=allow remoteip=104.19.198.151
+    - netsh advfirewall firewall add rule name="JQUERY" dir=out interface=any action=allow remoteip=205.185.208.52
+    - netsh advfirewall firewall add rule name="SPARTAN" dir=out interface=any action=allow remoteip=147.232.41.79
+  tags:
+    - prog-block
+
+- name: "Unblock internet for 'Programovanie' course exam"
+  win_shell: "{{ item }}"
+  with_items:
+    - netsh advfirewall set currentprofile firewallpolicy blockinbound,allowoutbound
+  tags:
+    - prog-unblock
+
+# --------------------- WINDOWS UPDATES -------------------------------------------- #
+
+- name: Enable windows update service
+  win_service:
+    name: wuauserv
+    start_mode: auto
+    state: started
+  tags:
+    - run-win-updates
+    - enable-win-update
+
+- name: Update windows
+  win_updates:
+    category_name: CriticalUpdates
+    reboot: yes
+    blacklist: 
+      - KB4056892
+  tags:
+    - run-win-updates
+
+- name: Disable windows update service
+  win_service:
+    name: wuauserv
+    start_mode: disabled
+    state: stopped
+  tags:
+    - run-win-updates
+    - disable-win-update
+
+# --------------------- ADMIN RIGHTS ----------------------------------------------- #
+
+- name: "Set admin full rights for 'C:\\Users\\student' home dir"
+  win_acl:
+    path: C:\Users\student
+    user: admin
+    rights: Read,Write,Modify,FullControl,Delete
+    type: allow
+    state: present
+
