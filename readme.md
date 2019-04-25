@@ -1,14 +1,15 @@
 # Anstall
 Anstall is an automated software installation tool for computer classrooms configuration and installation at Department of Computers and Informacits of Technical university of Košice. This project includes examples of usage for Windows based nodes management.
 
+## Project Background
+This project is part of the scientific [paper](https://madeja.github.io/publications/19-oss-conf-anstall.pdf) presented at [OSS Conf 2019](http://ossconf.soit.sk/).
+
 ## Used technologies
 [Ansible](https://www.ansible.com/) is used as the main technology. To install ansible follow [Installation Giude](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html).
 
 To setup Windows-based nodes see [How to set up a Windows Host](https://docs.ansible.com/ansible/latest/user_guide/windows_setup.html).
 
 ## Usage
-
-
 
 General manipulation:
 ```
