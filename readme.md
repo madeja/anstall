@@ -58,3 +58,6 @@ Some virtualbox staff (hackaton 2017)
 ```
 ansible-playbook playbooks/b512.yml --tags "hackaton-2017"
 ```
+
+## Acknowledgment
+This work was supported by project KEGA No. 053TU-KE-4/2019: Learning Software Engineering via Continues Challenges and Competitions.
